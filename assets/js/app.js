@@ -36,3 +36,47 @@ function shuffle(array) {
   * + hareket sayacını artırın ve sayfada görüntüleyin (bu işlevselliği, buradan çağırdığınız başka bir fonksiyona koyun)
   * + tüm kartlar eşleşirse, son skoru içeren bir mesaj görüntüler (bu işlevselliği, buradan çağırdığınız başka bir fonksiyona koyun)
   */
+
+const cards = document.querySelectorAll('.card');
+
+for(let card of cards) {
+    card.addEventListener('click', show);
+}
+let openCards = [];
+let matchedCards = [];
+function show(e) {
+  // İkiden fazla kart açılmasını engelle
+    if (openCards.length >= 2) {
+        return;
+    }
+
+  // Açık kartları diziye push'la
+    e.target.classList.add('open', 'show');
+    openCards.push(e.target);
+    console.log(openCards, openCards.length);
+
+  // Açık kartları bir süre sonra kapatın
+    if (openCards.length === 2) {
+        match();
+    }
+}
+
+function match() {
+    if (openCards[0].firstElementChild.classList.value === openCards[1].firstElementChild.classList.value) {
+        openCards.map(function(card) {
+            card.className = 'card match';
+            matchedCards.push(card);
+        });
+        openCards = [];
+        console.log(matchedCards, matchedCards.length);
+    } else {
+  // Eşleşmezlerse kartları gizle
+        setTimeout(function() {
+            for(let opencard of openCards) {
+                opencard.classList.remove('open', 'show');
+            }
+            openCards = [];
+            console.log(openCards, openCards.length);
+        }, 1500);
+    }
+}
